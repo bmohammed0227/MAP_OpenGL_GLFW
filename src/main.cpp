@@ -37,6 +37,7 @@ double xCamera = 0, yCamera = 0, zCamera = 0;
 double xOrigin = 0, yOrigin = 0, zOrigin = 0;
 double scaleX = 1, scaleY = 1, scaleZ = 1;
 float rotationX = 0, rotationY = 0, rotationZ = 0;
+int carIsMoving = 0;
 static void key_callback(GLFWwindow *window, int key, int scancode, int action,
 	int mods) {
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
@@ -45,11 +46,13 @@ static void key_callback(GLFWwindow *window, int key, int scancode, int action,
 		scaleX += SCALE;
 	else if ((key == GLFW_KEY_LEFT || key == GLFW_KEY_A) && action == GLFW_PRESS)
 		scaleX -= SCALE;
-	else if ((key == GLFW_KEY_UP || key == GLFW_KEY_W) && action == GLFW_PRESS)
-		scaleY += SCALE;
+	if ((key == GLFW_KEY_UP || key == GLFW_KEY_W) && action == GLFW_PRESS)
+	    carIsMoving = 1;
 	else if ((key == GLFW_KEY_DOWN || key == GLFW_KEY_S) && action == GLFW_PRESS)
-		scaleY -= SCALE;
-	else if ((key == GLFW_KEY_G) && action == GLFW_PRESS)
+	    carIsMoving = -1;
+	if ((key == GLFW_KEY_DOWN || key == GLFW_KEY_S || key == GLFW_KEY_UP || key == GLFW_KEY_W) && action == GLFW_RELEASE)
+	    carIsMoving = 0;
+	if ((key == GLFW_KEY_G) && action == GLFW_PRESS)
 	{
 		xCamera++;
 		xOrigin--;
@@ -205,7 +208,9 @@ int main() {
 
 		glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
 		glUniform1f(color_or_texture, 1);
-		//car.draw();
+		
+
+		car.draw(MatrixID, Model, View, Projection, carIsMoving);
 		for (double i = -7.5; i < 8; i = i + 1.5)
 		{
 			env.draw(i, Model, View, Projection, MatrixID, color_or_texture, TextureID);
