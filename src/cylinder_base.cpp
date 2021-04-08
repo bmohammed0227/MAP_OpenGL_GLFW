@@ -9,7 +9,7 @@ CylinderBase::CylinderBase(float offsetX, float offsetZ) {
     float rayon = 1.5;
 
     // bases cylinder positions
-    STRVertex positions[numPoints + 3];
+    STRVertex positions[50 + 3];
     positions[0] = {
       glm::vec3(offsetX, 0.0f, offsetZ),
       glm::vec3(0.0f, 0.0f, 1.0f)

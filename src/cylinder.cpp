@@ -9,7 +9,7 @@ Cylinder::Cylinder(float offsetX, float offsetZ, float length) {
   // Cylinder positions
   double pi = 3.14, x, y;
   float rayon = 1.5;
-  STRVertex positions[numPoints + 2];
+  STRVertex positions[50 + 2];
   for (int i = 0; i < numPoints + 1; i = i + 2) {
     x = rayon * cos(i * 2 * pi / numPoints);
     y = rayon * sin(i * 2 * pi / numPoints);

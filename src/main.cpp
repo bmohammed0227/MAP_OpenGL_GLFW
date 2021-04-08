@@ -16,7 +16,6 @@
 #include <ostream>
 #include <stdio.h>
 #include <string>
-
 #include "shader.hpp"
 #include "car.hpp"
 #include "environment.hpp"
@@ -33,8 +32,8 @@ double xOld = 0;
 double yOld = 0;
 double SCALE_ROTATION = 0.5;
 double SCALE = 0.5;
-double xCamera = 0, yCamera = 0, zCamera = 0;
-double xOrigin = 0, yOrigin = 0, zOrigin = 0;
+double xCamera = 8, yCamera = -1.5, zCamera = 4.5;
+double xOrigin = 0, yOrigin = 0, zOrigin = -40;
 double scaleX = 1, scaleY = 1, scaleZ = 1;
 float rotationX = 0, rotationY = 0, rotationZ = 0;
 int carIsMoving = 0;
@@ -47,20 +46,76 @@ static void key_callback(GLFWwindow *window, int key, int scancode, int action,
 	else if ((key == GLFW_KEY_LEFT || key == GLFW_KEY_A) && action == GLFW_PRESS)
 		scaleX -= SCALE;
 	if ((key == GLFW_KEY_UP || key == GLFW_KEY_W) && action == GLFW_PRESS)
-	    carIsMoving = 1;
+		carIsMoving = -1;
 	else if ((key == GLFW_KEY_DOWN || key == GLFW_KEY_S) && action == GLFW_PRESS)
-	    carIsMoving = -1;
+	    carIsMoving = 1;
 	if ((key == GLFW_KEY_DOWN || key == GLFW_KEY_S || key == GLFW_KEY_UP || key == GLFW_KEY_W) && action == GLFW_RELEASE)
 	    carIsMoving = 0;
-	if ((key == GLFW_KEY_G) && action == GLFW_PRESS)
+	xCamera -= 0.0605*carIsMoving;
+	std::cout << "xCamera : " << xCamera << std::endl;
+	if (key == GLFW_KEY_I && action == GLFW_PRESS)
 	{
 		xCamera++;
-		xOrigin--;
+		std::cout << "xCamera : " << xCamera << std::endl;
 	}
-	else if ((key == GLFW_KEY_H) && action == GLFW_PRESS)
+	if (key == GLFW_KEY_O && action == GLFW_PRESS)
+	{
+		yCamera++;
+		std::cout << "yCamera : " << yCamera << std::endl;
+	}
+	if (key == GLFW_KEY_P && action == GLFW_PRESS)
+	{
+		zCamera++;
+		std::cout << "zCamera : " << zCamera << std::endl;
+	}
+
+	if (key == GLFW_KEY_K && action == GLFW_PRESS)
 	{
 		xCamera--;
-		//xOrigin--;
+		std::cout << "xCamera : " << xCamera << std::endl;
+	}
+	if (key == GLFW_KEY_L && action == GLFW_PRESS)
+	{
+		yCamera--;
+		std::cout << "yCamera : " << yCamera << std::endl;
+	}
+	if (key == GLFW_KEY_M && action == GLFW_PRESS)
+	{
+		zCamera--;
+		std::cout << "zCamera : " << zCamera << std::endl;
+	}
+
+	///////////////////////////////////////
+	if (key == GLFW_KEY_T && action == GLFW_PRESS)
+	{
+		xOrigin++;
+		std::cout << "xOrigin : " << xOrigin << std::endl;
+	}
+	if (key == GLFW_KEY_Y && action == GLFW_PRESS)
+	{
+		yOrigin++;
+		std::cout << "yOrigin : " << yOrigin << std::endl;
+	}
+	if (key == GLFW_KEY_U && action == GLFW_PRESS)
+	{
+		zOrigin++;
+		std::cout << "zOrigin : " << zOrigin << std::endl;
+	}
+
+	if (key == GLFW_KEY_G && action == GLFW_PRESS)
+	{
+		xOrigin--;
+		std::cout << "xOrigin : " << xOrigin << std::endl;
+	}
+	if (key == GLFW_KEY_H && action == GLFW_PRESS)
+	{
+		yOrigin--;
+		std::cout << "yOrigin : " << yOrigin << std::endl;
+	}
+	if (key == GLFW_KEY_J && action == GLFW_PRESS)
+	{
+		zOrigin--;
+		std::cout << "zOrigin : " << zOrigin << std::endl;
 	}
 }
 static void cursor_position_callback(GLFWwindow *window, double xposNew,
@@ -103,7 +158,7 @@ int main() {
 		return -1;
 
 	/* Create a windowed mode window and its OpenGL context */
-	window = glfwCreateWindow(640, 480, "TP 9 OpenGL", NULL, NULL);
+	window = glfwCreateWindow(1280, 960, "Projet SI", NULL, NULL);
 	if (!window) {
 		glfwTerminate();
 		return -1;
@@ -196,21 +251,23 @@ int main() {
 		Model = glm::translate(Model, glm::vec3(-1.f, 0.0f, 0.0f));
 		Model = glm::scale(Model, glm::vec3(3.f + scaleX, 3.f + scaleY, 3.f + scaleZ));
 		Model = glm::rotate(Model, glm::radians(-90.f), glm::vec3(1.0f, 0.0f, 0.0f));
-		Model = glm::rotate(Model, glm::radians(80.f), glm::vec3(0.0f, 0.0f, 1.0f));
-		Model = glm::rotate(Model, glm::radians(10.f), glm::vec3(0.0f, 1.0f, 0.0f));
+		Model = glm::rotate(Model, glm::radians(90.f), glm::vec3(0.0f, 0.0f, 1.0f));
+		//Model = glm::rotate(Model, glm::radians(10.f), glm::vec3(0.0f, 1.0f, 0.0f));
 		Model = glm::rotate(Model, glm::radians(rotationY),
 			glm::vec3(1.0f, 0.0f, 0.0f));
 		Model = glm::rotate(Model, glm::radians(rotationX),
 			glm::vec3(0.0f, 1.0f, 1.0f));
 
-		Model = glm::translate(Model, glm::vec3(0.f, ((int)(xOrigin / 60)) * 15, 0.0f));
+		Model = glm::translate(Model, glm::vec3(0.f, -((int)((xCamera - 58) / 60)) * 15, 0.0f));
 		glm::mat4 MVP = Projection * View * Model;
 
 		glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
 		glUniform1f(color_or_texture, 1);
 		
-
+		Model = glm::translate(Model, glm::vec3(0.f, ((int)((xCamera - 58) / 60)) * 15, 0.0f));
 		car.draw(MatrixID, Model, View, Projection, carIsMoving);
+		Model = glm::translate(Model, glm::vec3(0.f, -((int)((xCamera - 58) / 60)) * 15, 0.0f));
+
 		for (double i = -7.5; i < 8; i = i + 1.5)
 		{
 			env.draw(i, Model, View, Projection, MatrixID, color_or_texture, TextureID);

@@ -137,7 +137,7 @@ Car::Car() {
 
   wheel = Wheel(0.335f, -0.4f);
 
-  posX = 0.0f;
+  posX = 45.0f;
 }
 
 void Car::draw(GLuint MatrixID, glm::mat4 Model, glm::mat4 View, glm::mat4 Projection, int isMoving) {
@@ -146,9 +146,15 @@ void Car::draw(GLuint MatrixID, glm::mat4 Model, glm::mat4 View, glm::mat4 Proje
   if (isMoving != 0) {
     posX += isMoving * 0.11f;
   }
+  
   newModel = glm::rotate(newModel, glm::radians(90.f), glm::vec3(1.0f, 0.0f, 0.0f));
-  newModel = glm::rotate(newModel, glm::radians(90.f), glm::vec3(0.0f, 1.0f, 0.0f));
-  newModel = glm::translate(newModel, glm::vec3(posX, 0.15f, 7.0f));
+  //newModel = glm::rotate(newModel, glm::radians(90.f), glm::vec3(0.0f, 1.0f, 0.0f));
+  //newModel = glm::translate(newModel, glm::vec3(posX, 0.15f, 8.3f));
+
+  newModel = glm::rotate(newModel, glm::radians(-90.f), glm::vec3(0.0f, 1.0f, 0.0f));
+
+  newModel = glm::translate(newModel, glm::vec3(-posX, 0.15f, -7.5f));
+
   glm::mat4 MVP = Projection * View * newModel;
   glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
 

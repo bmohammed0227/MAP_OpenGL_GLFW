@@ -70,7 +70,7 @@ Environment::Environment() {
 
 
 	char data[256 * 256 * 3];
-	FILE *f = fopen("ground3.raw", "rb");
+	FILE *f = fopen("test1.raw", "rb");
 	if (f)
 	{
 		fread(data, 256 * 256 * 3, 1, f);
@@ -136,13 +136,13 @@ void Environment::draw(double dy, glm::mat4 Model, glm::mat4 View, glm::mat4 Pro
 	glDrawElements(GL_TRIANGLES, ibo_size, GL_UNSIGNED_INT, (void *)0);
 
 
-	//glUniform1f(color_or_texture, 0);
+	glUniform1f(color_or_texture, 0);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, text);
 	glUniform1i(TextureID, 0);
 	glBindVertexArray(vao);
 	glDrawArrays(GL_TRIANGLES, 0, 6);
-	//glUniform1f(color_or_texture, 1);
+	glUniform1f(color_or_texture, 1);
 	glBindVertexArray(0);
 
 	Model = glm::translate(Model, glm::vec3(-1.f, dy, 0.0f));
