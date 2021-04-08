@@ -48,9 +48,9 @@ static void key_callback(GLFWwindow *window, int key, int scancode, int action,
 	if ((key == GLFW_KEY_UP || key == GLFW_KEY_W) && action == GLFW_PRESS)
 		carIsMoving = -1;
 	else if ((key == GLFW_KEY_DOWN || key == GLFW_KEY_S) && action == GLFW_PRESS)
-	    carIsMoving = 1;
+		carIsMoving = 1;
 	if ((key == GLFW_KEY_DOWN || key == GLFW_KEY_S || key == GLFW_KEY_UP || key == GLFW_KEY_W) && action == GLFW_RELEASE)
-	    carIsMoving = 0;
+		carIsMoving = 0;
 	xCamera -= 0.0605*carIsMoving;
 	std::cout << "xCamera : " << xCamera << std::endl;
 	if (key == GLFW_KEY_I && action == GLFW_PRESS)
@@ -259,7 +259,7 @@ int main() {
 			glm::vec3(0.0f, 1.0f, 1.0f));
 
 
-		if(xCamera>0)
+		if (xCamera > 0)
 			Model = glm::translate(Model, glm::vec3(0.f, -((int)(xCamera / 60)) * 15, 0.0f));
 		else
 			Model = glm::translate(Model, glm::vec3(0.f, -((int)((xCamera - 58) / 60)) * 15, 0.0f));
@@ -267,7 +267,7 @@ int main() {
 
 		glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
 		glUniform1f(color_or_texture, 1);
-		
+
 		if (xCamera > 0)
 			Model = glm::translate(Model, glm::vec3(0.f, ((int)(xCamera / 60)) * 15, 0.0f));
 		else
@@ -282,7 +282,7 @@ int main() {
 
 		for (double i = -7.5; i < 8; i = i + 1.5)
 		{
-			env.draw(i, Model, View, Projection, MatrixID, color_or_texture, TextureID);
+			env.draw(i, Model, View, Projection, MatrixID, color_or_texture, TextureID, i);
 			for (int j = -120; j < 21; j = j + 5) {
 				int i_index = i / 1.5 + 5;
 				int j_index = (j + 120) / 5;

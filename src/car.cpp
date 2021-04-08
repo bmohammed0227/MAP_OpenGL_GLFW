@@ -153,8 +153,8 @@ void Car::draw(GLuint MatrixID, glm::mat4 Model, glm::mat4 View, glm::mat4 Proje
 
   newModel = glm::rotate(newModel, glm::radians(-90.f), glm::vec3(0.0f, 1.0f, 0.0f));
 
-  newModel = glm::translate(newModel, glm::vec3(-posX, 0.15f, -7.5f));
-
+  //newModel = glm::translate(newModel, glm::vec3(-posX, 0.15f, -7.5f));
+  newModel = glm::translate(newModel, glm::vec3(-posX, 0.15f, -7.3f));
   glm::mat4 MVP = Projection * View * newModel;
   glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
 

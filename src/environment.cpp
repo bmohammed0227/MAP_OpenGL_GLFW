@@ -14,8 +14,8 @@ using namespace std;
 #include <glm/gtx/transform.hpp>
 
 Environment::Environment() {
-	
-	glm::vec2 nullVector = glm::vec2(0,0);
+
+	glm::vec2 nullVector = glm::vec2(0, 0);
 	vertices = {
 		glm::vec3(-1, -0.6832772098542, 0),						glm::vec3(0, 0, 1),						nullVector,  // 1
 		glm::vec3(-0.7752259910481, -0.7310536957976, 0),		glm::vec3(0, 0, 0.9),  					nullVector,  // 2
@@ -46,14 +46,14 @@ Environment::Environment() {
 
 
 	vertices2 = {
-		glm::vec3(-10, 10, -0.001), glm::vec3(0.5, 0.0, 1.0), glm::vec2(-100,100),
-		glm::vec3(-10, -10, -0.001), glm::vec3(0.5, 0.0, 1.0), glm::vec2(-100,-100),
-		glm::vec3(10, 10, -0.001), glm::vec3(0.5, 0.0, 1.0), glm::vec2(100,100),
-		glm::vec3(10, -10, -0.001), glm::vec3(0.5, 0.0, 1.0), glm::vec2(100,-100),
-		glm::vec3(-10, -10, -0.001), glm::vec3(0.5, 0.0, 1.0), glm::vec2(-100,-100),
-		glm::vec3(10, 10, -0.001), glm::vec3(0.5, 0.0, 1.0), glm::vec2(100,100),
-	};
+		 glm::vec3(-100.0f,-100.0f, 0.0),glm::vec3(0.5, 0.0, 1.0), glm::vec2(0.0f, 0.0f),
+		 glm::vec3( 100.0f, 100.0f, 0.0),glm::vec3(0.5, 0.0, 1.0), glm::vec2(200.0f, 200.0f),
+		 glm::vec3(-100.0f, 100.0f, 0.0),glm::vec3(0.5, 0.0, 1.0), glm::vec2(0.0f, 200.0f),
+		 glm::vec3(100.0f, 100.0f, 0.0),glm::vec3(0.5, 0.0, 1.0), glm::vec2(200.0f, 200.0f),
+		 glm::vec3(-100.0f,-100.0f, 0.0),glm::vec3(0.5, 0.0, 1.0), glm::vec2(0.0f, 0.0f),
+		 glm::vec3(100.0f,-100.0f, 0.0),glm::vec3(0.5, 0.0, 1.0), glm::vec2(200.0f, 0.0f),
 
+	};
 
 	GLuint vbo2;
 	glGenBuffers(1, &vbo2);
@@ -70,7 +70,7 @@ Environment::Environment() {
 
 
 	char data[256 * 256 * 3];
-	FILE *f = fopen("test1.raw", "rb");
+	FILE *f = fopen("test7.raw", "rb");
 	if (f)
 	{
 		fread(data, 256 * 256 * 3, 1, f);
@@ -107,11 +107,11 @@ Environment::Environment() {
 	glGenVertexArrays(1, &vao2);
 	glBindVertexArray(vao2);
 
-	
+
 }
 
-void Environment::draw(double dy, glm::mat4 Model, glm::mat4 View, glm::mat4 Projection, GLuint MatrixID, GLuint color_or_texture, GLuint TextureID) {
-	
+void Environment::draw(double dy, glm::mat4 Model, glm::mat4 View, glm::mat4 Projection, GLuint MatrixID, GLuint color_or_texture, GLuint TextureID, double num_env) {
+
 	// First moutains
 	glBindVertexArray(vao2);
 	Model = glm::translate(Model, glm::vec3(0.f, -dy, 0.0f)); // translate to draw the moutain 'i'
@@ -136,17 +136,19 @@ void Environment::draw(double dy, glm::mat4 Model, glm::mat4 View, glm::mat4 Pro
 	glDrawElements(GL_TRIANGLES, ibo_size, GL_UNSIGNED_INT, (void *)0);
 
 
-	glUniform1f(color_or_texture, 0);
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, text);
-	glUniform1i(TextureID, 0);
-	glBindVertexArray(vao);
-	glDrawArrays(GL_TRIANGLES, 0, 6);
-	glUniform1f(color_or_texture, 1);
-	glBindVertexArray(0);
+	if (num_env == -4.5) {
+		glUniform1f(color_or_texture, 0);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, text);
+		glUniform1i(TextureID, 0);
+		glBindVertexArray(vao);
+		glDrawArrays(GL_TRIANGLES, 0, 6);
+		glUniform1f(color_or_texture, 1);
+		glBindVertexArray(0);
+	}
+	
 
 	Model = glm::translate(Model, glm::vec3(-1.f, dy, 0.0f));
 	glBindVertexArray(0);
 
 }
-
