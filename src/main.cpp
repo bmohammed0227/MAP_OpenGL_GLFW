@@ -258,15 +258,27 @@ int main() {
 		Model = glm::rotate(Model, glm::radians(rotationX),
 			glm::vec3(0.0f, 1.0f, 1.0f));
 
-		Model = glm::translate(Model, glm::vec3(0.f, -((int)((xCamera - 58) / 60)) * 15, 0.0f));
+
+		if(xCamera>0)
+			Model = glm::translate(Model, glm::vec3(0.f, -((int)(xCamera / 60)) * 15, 0.0f));
+		else
+			Model = glm::translate(Model, glm::vec3(0.f, -((int)((xCamera - 58) / 60)) * 15, 0.0f));
 		glm::mat4 MVP = Projection * View * Model;
 
 		glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
 		glUniform1f(color_or_texture, 1);
 		
-		Model = glm::translate(Model, glm::vec3(0.f, ((int)((xCamera - 58) / 60)) * 15, 0.0f));
+		if (xCamera > 0)
+			Model = glm::translate(Model, glm::vec3(0.f, ((int)(xCamera / 60)) * 15, 0.0f));
+		else
+			Model = glm::translate(Model, glm::vec3(0.f, ((int)((xCamera - 58) / 60)) * 15, 0.0f));
+
 		car.draw(MatrixID, Model, View, Projection, carIsMoving);
-		Model = glm::translate(Model, glm::vec3(0.f, -((int)((xCamera - 58) / 60)) * 15, 0.0f));
+
+		if (xCamera > 0)
+			Model = glm::translate(Model, glm::vec3(0.f, -((int)(xCamera / 60)) * 15, 0.0f));
+		else
+			Model = glm::translate(Model, glm::vec3(0.f, -((int)((xCamera - 58) / 60)) * 15, 0.0f));
 
 		for (double i = -7.5; i < 8; i = i + 1.5)
 		{
